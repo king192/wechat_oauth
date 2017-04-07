@@ -11,7 +11,7 @@ class Oauth {
 		$this->appid = $wx_appid;
 		$this->appsecret = $wx_appsecret;
 		if(empty($this->appid)){
-			throw new E('weixin appid need config');
+			throw new E('weixin appid need config'); 
 		}
 		if(empty($this->appsecret)){
 			throw new E('weixin appsecret need config');
