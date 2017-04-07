@@ -47,11 +47,11 @@ class Oauth {
 	 * 根据code获取openid ，再获取用户信息
 	 * 获取微信用户信息
 	 */
-	public function getUserInfo(){
+	public function getUserInfo($code){
         $appid = $this->appid;//"wx3a5aac7161b28013"; //公众号的唯一标识
         $secret = $this->appsecret;//C('APPSECRET');//"d4624c36b6795d1d99dcf0547af5443d";  //公众号的appsecret
 	        // trace($appid.'/////'.$secret,'=====================access_token==========================','DEBUG');
-        $code = $_GET["code"];  //第一步获取的code参数
+        // $code = $_GET["code"];  //第一步获取的code参数
 
         if(true){
 	        //获取授权token
@@ -91,7 +91,7 @@ class Oauth {
             return $get_subscribe;
 	    }
 	}
-	
+
     protected function https_request($url,$data = null){
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
