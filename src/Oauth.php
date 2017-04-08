@@ -57,7 +57,7 @@ class Oauth {
 	        //获取授权token
 	        $get_token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$appid.'&secret='.$secret.'&code='.$code.'&grant_type=authorization_code';
 	        // trace($get_token_url,'=====================get_token_url==========================','DEBUG');
-	        $json_obj = json_decode($this->https_request($get_token_url),true);
+	        $json_obj = json_decode($this->post($get_token_url),true);
 	        // trace($json_obj,'=====================wx_debug==========================','DEBUG');
 	        // var_dump($json_obj);
 	        $access_token = $json_obj['access_token'];
@@ -65,7 +65,7 @@ class Oauth {
 	        // var_dump($json_obj);
 	        //根据openid和access_token查询用户信息
 	        $get_user_info_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
-	        $res = $this->https_request($get_user_info_url);
+	        $res = $this->post($get_user_info_url);
 	        $user_obj = json_decode($res,true);
 	        $user_obj['access_token'] = $access_token;
             // echo '=====================<br>';
@@ -77,12 +77,12 @@ class Oauth {
 	    }else{
 
             $get_tken_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$secret;
-            $get_tken = json_decode($this->https_request($get_tken_url),true);
+            $get_tken = json_decode($this->post($get_tken_url),true);
             // var_dump($get_tken);
 // trace($get_tken,'=====================wx_debug1==========================','DEBUG');
             $access_token = $get_tken['access_token'];
             $get_subscribe_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$puid_openid.'&lang=zh_CN';
-            $get_subscribe = json_decode($this->https_request($get_subscribe_url),true);
+            $get_subscribe = json_decode($this->post($get_subscribe_url),true);
             $get_subscribe['access_token'] = $access_token;
             if(isset($_GET['debug'])){
             	var_dump($get_subscribe);
@@ -109,4 +109,40 @@ class Oauth {
         curl_close($curl);
         return $output;
     }
+	/**
+	 * 发起POST请求
+	 *
+	 * @access public
+	 * @param string $url
+	 * @param array $data
+	 * @return string
+	 */
+	protected function post($url, $data = '', $cookie = '', $type = 0)
+	{
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查  
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_HEADER, 0);
+	    if($cookie){
+	        curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+	        curl_setopt ($ch, CURLOPT_REFERER,'https://wx.qq.com');
+	    }
+	    if($type){
+	        $header = array(
+	        'Content-Type: application/json',
+	        );
+	    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	    }
+
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+	    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+	    $output = curl_exec($ch);
+	    curl_close($ch);
+	    return $output;
+	}
 }
