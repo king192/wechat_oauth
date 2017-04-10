@@ -103,6 +103,9 @@ class Oauth {
 	    curl_setopt($curl, CURLOPT_URL, $url);
 
 	    $res = curl_exec($curl);
+        if(false === $res){
+        	throw new E('curl error:'.curl_error($curl));
+        }
 	    curl_close($curl);
 
 	    return $res;
