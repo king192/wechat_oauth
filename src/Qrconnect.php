@@ -27,5 +27,8 @@ class Qrconnect{
 	public function setCache(){
 		return $this->isLogin();
 	}
+	// public function getCache(){
+		
+	// }
 
 }
