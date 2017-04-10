@@ -57,7 +57,7 @@ class Oauth {
 	        //获取授权token
 	        $get_token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$appid.'&secret='.$secret.'&code='.$code.'&grant_type=authorization_code';
 	        // trace($get_token_url,'=====================get_token_url==========================','DEBUG');
-	        $json_obj = json_decode($this->post($get_token_url),true);
+	        $json_obj = json_decode($this->httpGet($get_token_url),true);
 	        // trace($json_obj,'=====================wx_debug==========================','DEBUG');
 	        // var_dump($json_obj);
 	        $access_token = $json_obj['access_token'];
@@ -65,7 +65,7 @@ class Oauth {
 	        // var_dump($json_obj);
 	        //根据openid和access_token查询用户信息
 	        $get_user_info_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
-	        $res = $this->post($get_user_info_url);
+	        $res = $this->httpGet($get_user_info_url);
 	        $user_obj = json_decode($res,true);
 	        $user_obj['access_token'] = $access_token;
             // echo '=====================<br>';
@@ -77,12 +77,12 @@ class Oauth {
 	    }else{
 
             $get_tken_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$secret;
-            $get_tken = json_decode($this->post($get_tken_url),true);
+            $get_tken = json_decode($this->httpGet($get_tken_url),true);
             // var_dump($get_tken);
 // trace($get_tken,'=====================wx_debug1==========================','DEBUG');
             $access_token = $get_tken['access_token'];
             $get_subscribe_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$puid_openid.'&lang=zh_CN';
-            $get_subscribe = json_decode($this->post($get_subscribe_url),true);
+            $get_subscribe = json_decode($this->httpGet($get_subscribe_url),true);
             $get_subscribe['access_token'] = $access_token;
             if(isset($_GET['debug'])){
             	var_dump($get_subscribe);
@@ -92,6 +92,21 @@ class Oauth {
 	    }
 	}
 
+    private function httpGet($url) {
+	    $curl = curl_init();
+	    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	    curl_setopt($curl, CURLOPT_TIMEOUT, 500);
+	    // 为保证第三方服务器与微信服务器之间数据传输的安全性，所有微信接口采用https方式调用，必须使用下面2行代码打开ssl安全校验。
+	    // 如果在部署过程中代码在此处验证失败，请到 http://curl.haxx.se/ca/cacert.pem 下载新的证书判别文件。
+	    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+	    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, true);
+	    curl_setopt($curl, CURLOPT_URL, $url);
+
+	    $res = curl_exec($curl);
+	    curl_close($curl);
+
+	    return $res;
+	  }
     protected function https_request($url,$data = null){
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
