@@ -22,7 +22,7 @@ class Qrconnect{
     	$wx = new \think\oauth\Oauth($appid,$appsecret);
     	$info = $wx->getUserInfo($code);
     	$info = json_encode($info);
-    	Session::set('qr_login',$info,3600);
+    	Session::set('qr_login',$info);
 	}
 	public function setCache(){
 		return $this->isLogin();
