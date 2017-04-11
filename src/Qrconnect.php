@@ -6,6 +6,7 @@ use think\Session;
 use think\oauth\oauth\Exception as E;
 
 class Qrconnect{
+	protected $openids = [];
 	private function isLogin(){
 		if(!Session::has('qr_login')){
 			return false;
@@ -21,6 +22,10 @@ class Qrconnect{
 	public function getUser($appid,$appsecret,$code){
     	$wx = new \think\oauth\Oauth($appid,$appsecret);
     	$info = $wx->getUserInfo($code);
+    	$res = $this->allowUser($info['openid'])
+    	if(!$res){
+    		exit('您没有权限登录');
+    	}
     	// $info = json_encode($info);
     	Session::set('qr_login',$info);
 	}
@@ -33,6 +38,22 @@ class Qrconnect{
 			Session::set('qr_login',null);
 		}
 		return $res;
+	}
+	public function setAllowUser($openids){
+		$this->openids = $openids;
+	}
+	public function getAllowUser(){
+		if(!is_array($this->openids) || $this->openids == []){
+			throw new E("请配置openids");			
+		}
+		return $this->openids;
+	}
+	private function allowUser($openid){
+		$openids = $this->getAllowUser();
+		if(!in_array($openid, $openids)){
+			return false;
+		}
+		return true;
 	}
 	// public function getCache(){
 
