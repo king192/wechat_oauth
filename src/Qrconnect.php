@@ -43,7 +43,7 @@ class Qrconnect{
 		$this->openids = $openids;
 	}
 	public function getAllowUser(){
-		if(!is_array($this->openids) || $this->openids == []){
+		if(!is_array($this->openids) || empty($this->openids)){
 			throw new E("请配置openids");			
 		}
 		return $this->openids;
