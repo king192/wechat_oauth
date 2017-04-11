@@ -34,9 +34,7 @@ class Qrconnect{
 	}
 	public function pull(){
 		$res = $this->setCache();
-		if($res){
-			Session::set('qr_login',null);
-		}
+		Session::set('qr_login',null);
 		return $res;
 	}
 	public function setAllowUser($openids){
