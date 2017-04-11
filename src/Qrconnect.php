@@ -8,7 +8,7 @@ use think\oauth\oauth\Exception as E;
 class Qrconnect{
 	protected $openids = [];
 	private function isLogin(){
-		if(!Session::has('qr_login')){
+		if(!Session::has('qr_login') || $this->isOut()){
 			return false;
 		}
 		return Session::get('qr_login');
@@ -26,9 +26,18 @@ class Qrconnect{
     	if(!$res){
     		exit('您没有权限登录');
     	}
+    	$info['login_time'] = time();
     	// $info = json_encode($info);
-    	Session::init(['expire'=>60]);
     	Session::set('qr_login',$info);
+	}
+	protected function isOut(){
+        //登录是否过期
+        $login_time = Session::get('qr_login.login_time');
+        if (time() - $login_time > 60) {
+            Session::clear();
+            return true;
+        }
+        return false;
 	}
 	public function setCache(){
 		return $this->isLogin();
