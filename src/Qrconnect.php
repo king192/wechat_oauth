@@ -21,7 +21,7 @@ class Qrconnect{
 	public function getUser($appid,$appsecret,$code){
     	$wx = new \think\oauth\Oauth($appid,$appsecret);
     	$info = $wx->getUserInfo($code);
-    	$info = json_encode($info);
+    	// $info = json_encode($info);
     	Session::set('qr_login',$info);
 	}
 	public function setCache(){
