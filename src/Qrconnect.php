@@ -27,6 +27,7 @@ class Qrconnect{
     		exit('您没有权限登录');
     	}
     	// $info = json_encode($info);
+    	Session::init(['expire'=>60]);
     	Session::set('qr_login',$info);
 	}
 	public function setCache(){
