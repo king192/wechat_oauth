@@ -22,7 +22,7 @@ class Qrconnect{
 	public function getUser($appid,$appsecret,$code){
     	$wx = new \think\oauth\Oauth($appid,$appsecret);
     	$info = $wx->getUserInfo($code);
-    	$res = $this->allowUser($info['openid'])
+    	$res = $this->allowUser($info['openid']);
     	if(!$res){
     		exit('您没有权限登录');
     	}
