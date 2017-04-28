@@ -24,7 +24,7 @@ class Oauth {
 	    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 	    // $Notify_url = "$protocol$_SERVER[HTTP_HOST]".$callcall_uri;
 		$redirect_uri = urlencode($redirect_uri);
-		$state = isset($_GET['url'])?$_GET['url']:'666';
+		$state = isset($_GET['url'])?$_GET['url']:'';
 		// $is_scope = max(0,$_GET['is_scope']);
 
 		$url = 'https://open.weixin.qq.com/connect/oauth2/authorize';
