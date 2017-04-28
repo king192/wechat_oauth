@@ -1,6 +1,6 @@
 <?php
-namespace king192\oauth;
-use king192\oauth\oauth\Exception as E;
+namespace king192\wechat_oauth;
+use king192\wechat_oauth\oauth\Exception as E;
 /**
  * 微信接入类（token认证）
  */

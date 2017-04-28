@@ -1,7 +1,7 @@
 <?php
-namespace king192\oauth;
+namespace king192\wechat_oauth;
 
-use king192\oauth\oauth\Exception as E;
+use king192\wechat_oauth\oauth\Exception as E;
 
 class Oauth {
 	protected $appid = null;
