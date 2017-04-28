@@ -1,5 +1,4 @@
 <?php
-
 namespace king192\oauth\oauth;
 
 
