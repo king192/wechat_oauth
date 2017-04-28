@@ -14,13 +14,13 @@ class Qrconnect{
 		return Session::get('qr_login');
 	}
 	public function getCode($appid,$appsecret,$redirect_uri){
-		$wx = new \king192\oauth\Oauth($appid,$appsecret);
+		$wx = new \king192\wechat_oauth\Oauth($appid,$appsecret);
     	// $url = url('admin/Test/wxInfo');
     	
     	$wx->getCode($redirect_uri);
 	}
 	public function getUser($appid,$appsecret,$code){
-    	$wx = new \king192\oauth\Oauth($appid,$appsecret);
+    	$wx = new \king192\wechat_oauth\Oauth($appid,$appsecret);
     	$info = $wx->getUserInfo($code);
     	$res = $this->allowUser($info['openid']);
     	if(!$res){
