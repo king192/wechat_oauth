@@ -1,0 +1,19 @@
+{
+    "name": "king192/wechat_oauth",
+    "description": "weixin oauth",
+    "authors": [
+        {
+            "name": "xhq",
+            "email": "git@yunshare.net"
+        }
+    ],
+    "license": "Apache-2.0",
+    "require": {
+        "king192/wechat_oauth": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "king192\\wechat_oauth\\": "src/"
+        }
+    }
+}
