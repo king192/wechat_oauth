@@ -7,5 +7,13 @@
             "email": "git@yunshare.net"
         }
     ],
-    "require": {}
+    "license": "Apache-2.0",
+    "require": {
+        "king192/wechat_oauth": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "king192\\wechat_oauth\\": "src/"
+        }
+    }
 }
