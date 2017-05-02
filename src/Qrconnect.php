@@ -1,7 +1,7 @@
 <?php
 namespace king192\wechat_oauth;
-use king192\Cache;
-use king192\Session;
+use think\Cache;
+use think\Session;
 
 use king192\wechat_oauth\oauth\Exception as E;
 
